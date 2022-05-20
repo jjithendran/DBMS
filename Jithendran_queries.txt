@@ -1,0 +1,670 @@
+
+--creating country table
+create table country(
+country_id int primary key not null identity,
+country_name varchar(255),
+status varchar(255));
+
+--creating child_sex_categories table
+create table child_sex_categories(
+cscId int primary key not null identity,
+sex varchar(255),
+status varchar(255));
+
+--altering table Child_Health_and_well_being
+alter table Child_Health_and_well_being
+add country_id int
+
+--inserting data into the column country in Child_Health_and_well_being table
+insert into Child_Health_and_well_being(country_id)
+select  case when Child_Health_and_well_being.country = 'india' then 1
+		   when Child_Health_and_well_being.country = 'vietnam' then 2
+		   when Child_Health_and_well_being.country = 'ethiopia' then 3
+		   when Child_Health_and_well_being.country = 'peru' then 4
+		   end as country_id
+		   from Child_Health_and_well_being
+
+--updating country_id for peru
+update Child_Health_and_well_being
+set country_id =4  where country = 'peru'
+
+--add foreign key as country_id to Child_Health_and_well_being table
+ALTER TABLE Child_Health_and_well_being
+ADD FOREIGN KEY (country_id) REFERENCES country(country_id);
+
+--remove column country from Child_Health_and_well_being table
+ALTER TABLE Child_Health_and_well_being
+DROP COLUMN country;
+
+--creating table child_health_categories
+create table child_health_categories(
+chcId int primary key not null identity,
+health_categories varchar(255),
+status varchar(255));
+
+--adding health_category_id column in Child_Health_and_well_being
+alter table Child_Health_and_well_being
+add health_category_id int
+
+--add foreign key as health_category_id to Child_Health_and_well_being table
+ALTER TABLE Child_Health_and_well_being
+ADD FOREIGN KEY (health_category_id) REFERENCES child_health_categories(chcId)
+
+--updating value health_category_id column in Child_Health_and_well_being table
+update Child_Health_and_well_being
+set health_category_id = 1  where chhealth = 'very poor';
+update Child_Health_and_well_being
+set health_category_id = 2  where chhealth = 'poor';
+update Child_Health_and_well_being
+set health_category_id = 3  where chhealth = 'average';
+update Child_Health_and_well_being
+set health_category_id = 4  where chhealth = 'good';
+update Child_Health_and_well_being
+set health_category_id = 5  where chhealth = 'very good'
+
+--removing column chhealth from Child_Health_and_well_being table
+ALTER TABLE Child_Health_and_well_being
+DROP COLUMN chhealth;
+
+--creating Child’s health and well-being variables 
+create table Child_Health_and_well_being (
+chwId int primary key not null identity,
+childId varchar(255),
+country varchar(255),
+chmightdie varchar(255),
+chillness varchar(255),
+chinjury varchar(255),
+chhprob varchar(255),
+chdisability varchar(255),
+chdisscale varchar(255),
+chhrel varchar(255),
+chhealth varchar(255),
+cladder varchar(255),
+);
+
+-- Inserting data into Child_Health_and_well_being table
+INSERT INTO [dbo].[Child_Health_and_well_being]
+           ([childId]
+           ,[country]
+		   ,[chmightdie]
+		   ,[chillness]
+		   ,[chinjury]
+		   ,[chhprob]
+		   ,[chdisability]
+		   ,[chhrel]
+		   ,[chhealth]
+		   ,[cladder])
+select childid, 'vietnam',
+		   case when dbo.vietnam_constructed$.chmightdie = 0 then 'no'
+		   when dbo.vietnam_constructed$.chmightdie = 1 then 'yes'
+		   end as chmightdie,
+		   case when dbo.vietnam_constructed$.chillness = 0 then 'no'
+		   when dbo.vietnam_constructed$.chillness = 1 then 'yes'
+		   end as chillness,
+		   case when dbo.vietnam_constructed$.chinjury = 0 then 'no'
+		   when dbo.vietnam_constructed$.chinjury = 1 then 'yes'
+		   end as chinjury,
+		   case when dbo.vietnam_constructed$.chhprob = 0 then 'no'
+		   when dbo.vietnam_constructed$.chhprob = 1 then 'yes'
+		   end as chhprob,
+		   case when dbo.vietnam_constructed$.chdisability = 0 then 'no'
+		   when dbo.vietnam_constructed$.chdisability = 1 then 'yes'
+		   end as chdisability,
+		   case when dbo.vietnam_constructed$.chhrel = 1 then 'same'
+		   when dbo.vietnam_constructed$.chhrel = 2 then 'better'
+		   when dbo.vietnam_constructed$.chhrel = 3 then 'Worse'
+		   end as chhrel,
+		   case when dbo.vietnam_constructed$.chhealth = 1 then 'very poor'
+		   when dbo.vietnam_constructed$.chhealth = 2 then 'poor'
+		   when dbo.vietnam_constructed$.chhealth = 3 then 'average'
+		   when dbo.vietnam_constructed$.chhealth = 4 then 'good'
+		   when dbo.vietnam_constructed$.chhealth = 5 then 'very good'
+		   end as chhrel,
+		   cladder
+		   from dbo.vietnam_constructed$;
+
+--add country_id column in Child_smoking_drinking_reproductive table
+alter table Child_smoking_drinking_reproductive
+add country_id int
+
+--adding country_id column in Child_smoking_drinking_reproductive table
+ALTER TABLE Child_smoking_drinking_reproductive
+ADD FOREIGN KEY (country_id) REFERENCES country(country_id)
+
+--updating country_id in Child_smoking_drinking_reproductive table
+update Child_smoking_drinking_reproductive
+set country_id = 1  where country = 'india';
+update Child_smoking_drinking_reproductive
+set country_id = 2  where country = 'vietnam';
+update Child_smoking_drinking_reproductive
+set country_id = 3  where country = 'ethiopia';
+update Child_smoking_drinking_reproductive
+set country_id = 4  where country = 'peru'
+
+--removing column country from Child_smoking_drinking_reproductive
+ALTER TABLE Child_smoking_drinking_reproductive
+DROP COLUMN country;
+
+--creating Child’s Smoking and drinking habits and reproductive health knowledge variables
+create table Child_smoking_drinking_reproductive (
+csdrId int primary key not null identity,
+childId varchar(255),
+country varchar(255),
+chsmoke varchar(255),
+chalcohol varchar(255),
+chrephealth1 varchar(255),
+chrephealth2 varchar(255),
+chrephealth3 varchar(255),
+chrephealth4 varchar(255)
+);
+
+-- Inserting data into Child_smoking_drinking_reproductive table
+INSERT INTO [dbo].[Child_smoking_drinking_reproductive]
+           ([childId]
+           ,[country]
+		   ,[chsmoke]
+		   ,[chalcohol]
+		   ,[chrephealth1]
+		   ,[chrephealth2]
+		   ,[chrephealth3]
+		   ,[chrephealth4])
+select childid, 'vietnam',
+		   case when dbo.vietnam_constructed$.chsmoke = 1 then 'Every day'
+		   when dbo.vietnam_constructed$.chsmoke = 2 then 'At least once a week'
+		   when dbo.vietnam_constructed$.chsmoke = 3 then 'At least once a month'
+		   when dbo.vietnam_constructed$.chsmoke = 4 then 'Hardly ever'
+		   when dbo.vietnam_constructed$.chsmoke = 5 then 'I never smoke cigarettes'
+		   end as chsmoke,
+		   case when dbo.vietnam_constructed$.chalcohol = 0 then 'no'
+		   when dbo.vietnam_constructed$.chalcohol = 1 then 'yes'
+		   end as chalcohol,
+		   chrephealth1,
+		   case when dbo.vietnam_constructed$.chrephealth2 = 0 then 'no'
+		   when dbo.vietnam_constructed$.chrephealth2 = 1 then 'yes'
+		   end as chrephealth2,
+		   case when dbo.vietnam_constructed$.chrephealth3 = 0 then 'no'
+		   when dbo.vietnam_constructed$.chrephealth3 = 1 then 'yes'
+		   end as chrephealth3,
+		   case when dbo.vietnam_constructed$.chrephealth4 = 1 then 'Shop or street vendor'
+		   when dbo.vietnam_constructed$.chrephealth4 = 2 then 'Family planning services or health facility'
+		   when dbo.vietnam_constructed$.chrephealth4 = 3 then 'Other'
+		   when dbo.vietnam_constructed$.chrephealth4 = 4 then 'I do not know what a condom is/I do not know where to get a condom'
+		   end as chrephealth4
+		   from dbo.vietnam_constructed$;
+
+--add column country_id column in Child_wealth_sub_indices table
+alter table Child_wealth_sub_indices
+add country_id int
+
+--adding foreign key country_id to Child_wealth_sub_indices table
+ALTER TABLE Child_wealth_sub_indices
+ADD FOREIGN KEY (country_id) REFERENCES country(country_id)
+
+--Updating country_id in Child_wealth_sub_indices table
+update Child_wealth_sub_indices
+set country_id = 1  where country = 'india';
+update Child_wealth_sub_indices
+set country_id = 2  where country = 'vietnam';
+update Child_wealth_sub_indices
+set country_id = 3  where country = 'ethiopia';
+update Child_wealth_sub_indices
+set country_id = 4  where country = 'peru'
+
+--removing country column from Child_wealth_sub_indices table
+ALTER TABLE Child_wealth_sub_indices
+DROP COLUMN country;
+
+--creating Child’s wealth index and sub-indices 
+create table Child_wealth_sub_indices (
+cwsiId int primary key not null identity,
+childId varchar(255),
+country varchar(255),
+wi float(5),
+hq float(5),
+sv float(5),
+cd float(5),
+elecq varchar(255),
+toiletq varchar(255),
+drwaterq varchar(255),
+cookingq varchar(255),
+);
+
+-- Inserting data into Child_wealth_sub_indices table
+INSERT INTO [dbo].[Child_wealth_sub_indices]
+           ([childId]
+           ,[country]
+		   ,[wi]
+		   ,[hq]
+		   ,[sv]
+		   ,[cd]
+		   ,[elecq]
+		   ,[toiletq]
+		   ,[drwaterq]
+		   ,[cookingq])
+select  childid, 'vietnam', wi_new, hq_new, sv_new, cd_new,
+		   case when [dbo].vietnam_constructed$.elecq_new = 0 then 'no'
+		   when [dbo].vietnam_constructed$.elecq_new = 1 then 'yes'
+		   end as elecq,
+		   case when [dbo].vietnam_constructed$.toiletq_new = 0 then 'no'
+		   when [dbo].vietnam_constructed$.toiletq_new = 1 then 'yes'
+		   end as toiletq,
+		   case when [dbo].vietnam_constructed$.drwaterq_new = 0 then 'no'
+		   when  [dbo].vietnam_constructed$.drwaterq_new = 1 then 'yes'
+		   end as drwaterq,
+		   case when [dbo].vietnam_constructed$.cookingq_new = 0 then 'no'
+		   when [dbo].vietnam_constructed$.cookingq_new = 2 then 'yes'
+		   end as cookingq
+		   from [dbo].vietnam_constructed$
+
+--adding country_id column in Child_time_use table
+alter table Child_time_use
+add country_id int
+
+--adding country_id as foreign key in Child_time_use table
+ALTER TABLE Child_time_use
+ADD FOREIGN KEY (country_id) REFERENCES country(country_id)
+
+--updating value country_id column in Child_time_use table
+update Child_time_use
+set country_id = 1  where country = 'india';
+update Child_time_use
+set country_id = 2  where country = 'vietnam';
+update Child_time_use
+set country_id = 3  where country = 'ethiopia';
+update Child_time_use
+set country_id = 4  where country = 'peru'
+
+--removing country column from Child_time_use table
+ALTER TABLE Child_time_use
+DROP COLUMN country;
+
+--creating Child’s STime-use variables variables
+create table Child_time_use (
+ctuId int primary key not null identity,
+childId varchar(255),
+country varchar(255),
+hsleep int,
+hcare int,
+hchore int,
+htask int,
+hwork int,
+hschool int,
+hstudy int,
+hplay int
+);
+
+-- Inserting data intoChild_time_use table
+INSERT INTO [dbo].Child_time_use
+           ([childId]
+           ,[country]
+		   ,hsleep
+		   ,hcare
+		   ,hchore
+		   ,htask
+		   ,hwork
+		   ,hschool
+		   ,hstudy
+		   ,hplay)
+select  childid, 'ethiopia', hsleep, hcare, hchore, htask, hwork, hschool, hstudy, hplay
+		   from [dbo].ethiopia_constructed$
+
+--adding country_id column in Child_Gen_Characteristics table
+alter table Child_Gen_Characteristics
+add country_id int
+
+--adding country_id as foreign key in Child_Gen_Characteristics table
+ALTER TABLE Child_Gen_Characteristics
+ADD FOREIGN KEY (country_id) REFERENCES country(country_id)
+
+--updating value in country_id column in Child_Gen_Characteristics table
+update Child_Gen_Characteristics
+set country_id = 1  where country = 'india';
+update Child_Gen_Characteristics
+set country_id = 2  where country = 'vietnam';
+update Child_Gen_Characteristics
+set country_id = 3  where country = 'ethiopia';
+update Child_Gen_Characteristics
+set country_id = 4  where country = 'peru'
+
+--removing column country from Child_Gen_Characteristics table
+ALTER TABLE Child_Gen_Characteristics
+DROP COLUMN country;
+
+--adding childSexId column in Child_Gen_Characteristics table
+alter table Child_Gen_Characteristics
+add childSexId int
+
+--adding childSexId as foreign key in Child_Gen_Characteristics table
+ALTER TABLE Child_Gen_Characteristics
+ADD FOREIGN KEY (childSexId) REFERENCES child_sex_categories(cscId)
+
+--updating value in childSexId column 
+update Child_Gen_Characteristics
+set childSexId = 1  where sex = 'male';
+update Child_Gen_Characteristics
+set childSexId = 2  where sex = 'female';
+
+--removing column sex from Child_Gen_Characteristics table
+ALTER TABLE Child_Gen_Characteristics
+DROP COLUMN sex;
+
+--creating table Child_Gen_Characteristics
+create table Child_Gen_Characteristics (
+gcId int primary key not null identity,
+childId varchar(255),
+country varchar(255),
+sex varchar(255),
+agemon int,
+marrcohab varchar(255),
+marrcohab_age int,
+birth varchar(255),
+birth_age int);
+
+--inserting data into Child_Gen_Characteristics table
+INSERT INTO [dbo].Child_Gen_Characteristics
+           ([childId]
+           ,[country]
+		   ,[sex]
+		   ,[agemon]
+		   ,[marrcohab]
+		   ,[marrcohab_age]
+		   ,[birth]
+		   ,[birth_age])
+select  childid, 'ethiopia',
+		   case when [dbo].[ethiopia_constructed$].chsex = 1 then 'male'
+		   when [dbo].[ethiopia_constructed$].chsex = 2 then 'female'
+		   end as chsex,
+		   agemon,
+		   case when [dbo].[ethiopia_constructed$].marrcohab = 0 then 'no'
+		   when [dbo].[ethiopia_constructed$].marrcohab = 1 then 'yes'
+		   end as marrcohab,
+		   marrcohab_age,
+		   case when [dbo].[ethiopia_constructed$].birth = 0 then 'no'
+		   when  [dbo].[ethiopia_constructed$].birth = 1 then 'yes'
+		   end as birth,
+		   birth_age
+		   from [dbo].[ethiopia_constructed$]
+
+
+
+/*child's Health problem*/
+
+--creating view for india
+create view	india_child_health_problem as
+select 
+'India' as country ,
+count(chhprob) as 'Total_Records', 
+(select count(chhprob) from dbo.Child_Health_and_well_being where country_id = 1 and chhprob = 'yes') as child_with_health_problem
+from dbo.Child_Health_and_well_being
+where country_id = 1;
+
+--creating view for peru
+create view	peru_child_health_problem as
+select 
+'peru' as country ,
+count(chhprob) as 'Total_Records', 
+(select count(chhprob) from dbo.Child_Health_and_well_being where  country_id  = 4 and chhprob = 'yes') as child_with_health_problem
+from dbo.Child_Health_and_well_being
+where country_id  = 4;
+
+--creating view for vietnam
+create view	vietnam_child_health_problem as
+select 
+'vietnam' as country ,
+count(chhprob) as 'Total_Records', 
+(select count(chhprob) from dbo.Child_Health_and_well_being where country_id = 2 and chhprob = 'yes') as child_with_health_problem
+from dbo.Child_Health_and_well_being
+where country_id = 2;
+
+--creating view for ethiopia
+create view	ethiopia_child_health_problem as
+select 
+'ethiopia' as country ,
+count(chhprob) as 'Total_Records', 
+(select count(chhprob) from dbo.Child_Health_and_well_being where country_id = 3 and chhprob = 'yes') as child_with_health_problem
+from dbo.Child_Health_and_well_being
+where country_id = 3;
+	
+--final query for getting result
+select country, (child_with_health_problem * 100 / Total_Records) as 'percentage of disability' from ethiopia_child_health_problem
+union
+select country, (child_with_health_problem * 100 / Total_Records) as 'percentage of disability' from peru_child_health_problem
+union
+select country, (child_with_health_problem * 100 / Total_Records) as 'percentage of disability' from vietnam_child_health_problem
+union
+select country, (child_with_health_problem * 100 / Total_Records) as 'percentage of disability' from india_child_health_problem
+order by 'percentage of disability' desc
+
+
+/*child's Access to electricity*/
+
+--Finding total for each country
+create view	VChild_Total_Access_electricity as
+select country_name, count(Child_wealth_sub_indices.elecq) as Total_Records
+from Child_wealth_sub_indices
+inner join country on country.country_id = Child_wealth_sub_indices.country_id
+where elecq is not null
+group by country_name
+
+--Finding the count of those who have electricity
+create view	VChild_Total_Access_electricity_yes as
+select country_name, count(elecq) as yes_count from Child_wealth_sub_indices
+inner join country on country.country_id = Child_wealth_sub_indices.country_id
+where elecq = 'yes' group by country_name
+
+--finding 'percentage_of_asses_electricity' from the above views
+select 
+VChild_Total_Access_electricity.country_name, 
+(VChild_Total_Access_electricity_yes.yes_count * 100/VChild_Total_Access_electricity.Total_Records) as 'percentage_of_asses_electricity'
+from VChild_Total_Access_electricity
+inner join VChild_Total_Access_electricity_yes on VChild_Total_Access_electricity.country_name = VChild_Total_Access_electricity_yes.country_name
+order by 'percentage_of_asses_electricity' desc
+
+/*child's Time use*/
+select country_name, avg(hsleep)as average_time_sleep,
+avg(hwork) as average_work,
+avg(hschool) as average_school,
+avg(hstudy)as average_study,
+avg(hplay) as average_play
+from Child_time_use
+inner join country on Child_time_use.country_id = country.country_id
+where hwork is not null or hsleep is not null or hschool is not null or hstudy is not null or hplay is not null
+group by country_name
+
+
+/*child's health*/
+select health_categories, count(health_categories) as child_Health_Total from Child_Health_and_well_being
+inner join child_health_categories on Child_Health_and_well_being.health_category_id = child_health_categories.chcId
+inner join country on Child_Health_and_well_being.country_id = country.country_id
+ where health_category_id is not null
+ group by health_categories
+ order by child_Health_Total desc
+
+
+ /*child's Access to safe drinking water */
+
+ --creating view for total records
+ create view VChild_drinking_water as
+select country_name, count(drwaterq) as Total_Records
+from Child_wealth_sub_indices
+inner join country on country.country_id = Child_wealth_sub_indices.country_id
+where drwaterq is not null
+group by country_name
+
+--creating view to find the count of child's have safe access of drinking water
+create view	VChild_has_safe_drinking_water as
+select country_name, count(drwaterq) as have_safe_drinking_water from Child_wealth_sub_indices
+inner join country on country.country_id = Child_wealth_sub_indices.country_id
+where drwaterq = 'yes' 
+group by country_name
+
+--final query for finding the percentage of childs which have safe drinking water
+select 
+VChild_drinking_water.country_name, 
+(VChild_has_safe_drinking_water.have_safe_drinking_water * 100/VChild_drinking_water.Total_Records) as 'percentage_of_child_have_safe_drinking_water'
+from VChild_drinking_water
+inner join VChild_has_safe_drinking_water on VChild_drinking_water.country_name = VChild_has_safe_drinking_water.country_name
+
+
+
+/* task 2*/
+
+/* health problem */
+
+--created view for finding child's health problem
+  create view	VStudent_health_problem as
+  select round(avg(STDHLTH1),2) as sight_problem,
+  round(avg(STDHLTH2),2) as Hearing_problem,
+  round(avg(STDHLTH3),2) as Headache,
+  round(avg(STDHLTH4),2) as Fever,
+  round(avg(STDHLTH5),2) as Stomach_problem,
+  round(avg(STDHLTH6),2) as Other_problem,
+  round(avg(STDHLTH0),2) as No_problems
+  from [vietnam_wave_1$]
+  
+  create view	VStudent_health_problem as
+  select STITMOW7 as mobile,
+  STHVCOMP as computer
+  from [vietnam_wave_1$]
+  where STITMOW7 = 1 or STHVCOMP = 1
+
+  select count(STHVCOMP) as has_computer
+  from [vietnam_wave_1$]
+  where STHVCOMP = 1
+  
+   select count(STITMOW7) as has_mobile
+  from [vietnam_wave_1$]
+  where STITMOW7 = 1
+  
+  
+  /* electronic_device */
+  create view	VStudent_electronic_device as
+  select (Have_mobile*100/Total_mobile) as percentage_mobile,
+  (Have_computer*100/Total_computer) as percentage_computer,
+  (Have_internet*100/Total_internet) as percentage_internet,
+  (Have_pocket_calculator*100/Total_pocket_calculator) as percentage_pocket_calculator
+  from 
+  (select count(STITMOW7) as Total_mobile,
+  (select count(STITMOW7) from vietnam_wave_1$ where STITMOW7 is not null and STITMOW7 = 1) as Have_mobile,
+   count(STHVCOMP) as Total_computer,
+  (select count(STHVCOMP) from vietnam_wave_1$ where STHVCOMP is not null and STHVCOMP = 1) as Have_computer,
+  count(STHVINTR) as Total_internet,
+  (select count(STHVINTR) from vietnam_wave_1$ where STHVINTR is not null and STHVINTR = 1) as Have_internet,
+   count(STITMOW8) as Total_pocket_calculator,
+  (select count(STITMOW8) from vietnam_wave_1$ where STITMOW8 is not null and STITMOW8 = 1) as Have_pocket_calculator
+  from vietnam_wave_1$)data
+
+
+  /* computer_usage */
+
+  --created view for computer usage at Home
+ create view VStudent_computer_usage_home as
+ select
+ case when vietnam_wave_2$.STCMPHME = 1 then 'Never or almost never'
+ when vietnam_wave_2$.STCMPHME = 2 then 'Once or twice a month'
+ when vietnam_wave_2$.STCMPHME = 3 then 'Once or twice a week'
+ when vietnam_wave_2$.STCMPHME = 4 then 'Every day or almost every day'
+ when vietnam_wave_2$.STCMPHME = 88 then 'NA'
+ when vietnam_wave_2$.STCMPHME = 79 then 'Missing'
+end as computer_usage,
+count(STCMPHME) as 'count of usage'
+from vietnam_wave_2$
+where STCMPHME is not null
+group by STCMPHME
+
+  --created view for computer usage at School
+ create view VStudent_computer_usage_school as
+ select
+ case when vietnam_wave_2$.STCMPSCH = 1 then 'Never or almost never'
+ when vietnam_wave_2$.STCMPSCH = 2 then 'Once or twice a month'
+ when vietnam_wave_2$.STCMPSCH = 3 then 'Once or twice a week'
+ when vietnam_wave_2$.STCMPSCH = 4 then 'Every day or almost every day'
+ when vietnam_wave_2$.STCMPSCH = 88 then 'NA'
+ when vietnam_wave_2$.STCMPSCH = 79 then 'Missing'
+end as computer_usage,
+count(STCMPSCH) as 'count of usage'
+from vietnam_wave_2$
+where STCMPSCH is not null
+group by STCMPSCH
+
+  --created view for computer usage at Other Places
+ create view VStudent_computer_usage_other_place as
+ select
+ case when vietnam_wave_2$.STCMPOTH = 1 then 'Never or almost never'
+ when vietnam_wave_2$.STCMPOTH = 2 then 'Once or twice a month'
+ when vietnam_wave_2$.STCMPOTH = 3 then 'Once or twice a week'
+ when vietnam_wave_2$.STCMPOTH = 4 then 'Every day or almost every day'
+ when vietnam_wave_2$.STCMPOTH = 88 then 'NA'
+ when vietnam_wave_2$.STCMPOTH = 79 then 'Missing'
+ ELSE NULL
+end as computer_usage,
+count(STCMPOTH) as 'count of usage'
+from vietnam_wave_2$
+where STCMPOTH is not null
+group by STCMPOTH
+
+
+
+/* task 3*/
+--creating view for combining datas of males in 2017 and 2018
+create view V_LSOA_male as
+select ['Mid-2017 Males$'].[Area Codes],['Mid-2017 Males$'].[Area Names],['Mid-2017 Males$'].[All Ages]
+from ['Mid-2017 Males$']
+union
+select ['Mid-2018 Males$'].[Area Codes],['Mid-2018 Males$'].[Area Names],['Mid-2018 Males$'].[All Ages]
+from ['Mid-2018 Males$']
+
+--creating view for combining datas of females in 2017 and 2018
+create view V_LSOA_female as
+select ['Mid-2017 Females$'].[Area Codes],['Mid-2017 Females$'].[Area Names],['Mid-2017 Females$'].[All Ages]
+from ['Mid-2017 Females$']
+union
+select ['Mid-2018 Females$'].[Area Codes],['Mid-2018 Females$'].[Area Names],['Mid-2018 Females$'].[All Ages]
+from ['Mid-2018 Females$']
+
+--finding result from above views
+create view VCrime_type_with_SumOfAges as
+select [Crime type], sum(temp.[All Ages]) as sum_of_ages from
+(select * from
+greater_manchester_crime_dataset
+inner join V_LSOA_male on greater_manchester_crime_dataset.[LSOA code] = V_LSOA_male.[Area Codes]
+where [Crime ID] is not null
+union
+select * from
+greater_manchester_crime_dataset
+inner join V_LSOA_female on greater_manchester_crime_dataset.[LSOA code] = V_LSOA_female.[Area Codes]
+where [Crime ID] is not null) temp
+group by temp.[Crime type]
+
+
+
+
+--adding ID column to table greater_manchester_crime_dataset
+alter table greater_manchester_crime_dataset
+add ID int IDENTITY;
+
+--adding ID column as primary key
+alter table greater_manchester_crime_dataset
+add constraint PK_Id primary key nonclustered(ID);
+
+--adding new column GeoLocation on greater_manchester_crime_dataset table
+alter table greater_manchester_crime_dataset
+add [GeoLocation] geography
+
+--updating value on GeoLocation Column
+update greater_manchester_crime_dataset
+set [GeoLocation] = geography::Point([Latitude], [Longitude],4326)
+where Latitude is not null and Longitude is not null
+
+--Creating view for drug crime in manchester
+create view manchester_Drugs
+as 
+select * from greater_manchester_crime_dataset
+where [Crime type] = 'Drugs' and GeoLocation is not null
+
+--Creating view for anti-social crime in manchester
+create view manchester_Anti_Social_Crimes
+as 
+select * from greater_manchester_crime_dataset
+where [Crime type]  like '%Anti-social behaviour%'
+ and GeoLocation is not null
